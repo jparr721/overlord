@@ -5,17 +5,19 @@ from os.path import splitext
 bfg9000_required_version('>=0.3.0')
 project('cerebrum', version='1.0pre')
 
-global_options(['-std=c++1z', '-Wall', '-Wextra', '-Werror', '-pedantic'],
+global_options(['-std=c++1z', '-Wall', '-Wextra', '-Werror', '-pedantic', '-fopenmp'],
                lang='c++')
+link_options=['-stdc++fs']
 
 includes = header_directory('include', include='*.h')
 pthread = [package('pthread')] if env.platform.flavor == 'posix' else []
 eigen = package('eigen3')
 
 lib = shared_library(
-    'cerebrum'
-    files=find_files('cerebrum/', '*.cc', extra='*.h')
-    includes=includes
+    'cerebrum',
+    files=find_files('cerebrum/', '*.cc', extra='*.h'),
+    link_options=link_options,
+    includes=includes,
     packages=pthread + eigen
 )
 
