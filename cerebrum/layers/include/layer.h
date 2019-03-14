@@ -4,10 +4,18 @@
 #include <Eigen/Dense>
 #include <functional>
 #include <stdexcept>
+#include <layers/layer_types.h>
+#include <linalg/tensor.h>
 
 namespace layer {
+  template<class LT>
   class Layer {
     public:
+      const LayerType type = LT;
+      Tensor<float> input_gradient;
+      Tensor<float> input;
+      Tensor<float> output;
+
       template<int dim>
       Eigen::Vector<float, dim> feed_forward(
           double input,

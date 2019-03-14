@@ -3,7 +3,7 @@
 
 #include <array>
 #include <Eigen/Dense>
-#include <linalg/dim>
+#include <linalg/dim.h>
 #include <sstream>
 #include <stdexcept>
 #include <vector>
