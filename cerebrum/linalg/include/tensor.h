@@ -9,6 +9,9 @@
 #include <vector>
 
 namespace linalg {
+#ifdef EMBEDDED
+  #pragma pack(push, 1)
+#endif
   template<typename T>
   class Tensor {
     public:
