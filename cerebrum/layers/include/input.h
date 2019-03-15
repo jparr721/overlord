@@ -6,11 +6,12 @@
 
 namespace layer {
   template<
-    int input_dim,
-    typename = typename std::enable_if<std::is_artihmetic<T>::value, T>::type>
-  class Input : public Layer {
-    public:
-      Input(eigen::Vector<T, input_dim>);
+    int dim,
+    typename = typename std::enable_if<std::is_artihmetic<T>::value, T>::type
+  >
+  struct Input : public Layer {
+    Input(Eigen::Vector<T, dim> inputs) inputs_(inputs) {};
+    Eigen::Vector<T, dim> inputs_;
   };
 } // namespace layer
 
