@@ -99,6 +99,9 @@ namespace linalg {
 
     return t;
   }
+#ifdef EMBEDDED
+  #pragma pack(pop)
+#endif
 } // namespace linalg
 
 
