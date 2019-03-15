@@ -4,8 +4,8 @@
 namespace layer {
   enum class LayerTypes {
     input,
-    conv,
-    fc
+    convolutional,
+    fully_connected
   };
 } // namespace layer
 #endif
