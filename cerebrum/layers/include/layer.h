@@ -5,6 +5,10 @@ namespace layer {
   class Layer {
     public:
       Layer();
+      const LayerType type = LT;
+      Tensor<float> input_gradient;
+      Tensor<float> input;
+      Tensor<float> output;
   };
 
 } // namespace layer
