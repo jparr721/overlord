@@ -2,7 +2,7 @@
 #define LAYER_TYPES_H_
 
 namespace layer {
-  enum class LayerTypes {
+  enum class LayerType {
     input,
     conv,
     fc,

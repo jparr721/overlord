@@ -1,7 +1,6 @@
 #ifndef LAYER_H_
 #define LAYER_H_
 
-#include <Eigen/Dense>
 #include <functional>
 #include <stdexcept>
 #include <layers/layer_types.h>
@@ -14,9 +13,9 @@ namespace layer {
       Layer();
 
       const LayerType type = LT;
-      Tensor<float> input_gradient;
-      Tensor<float> input;
-      Tensor<float> output;
+      linalg::Tensor<float> input_gradient;
+      linalg::Tensor<float> input;
+      linalg::Tensor<float> output;
   };
 
 } // namespace layer
