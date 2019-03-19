@@ -35,6 +35,28 @@ namespace layer {
           }
         }
       }
+
+      int absorb_dimension(dim_t d) {
+        return d.z * (input.size.x * input.size.y) + d.y * (input.size.x) + d.x;
+      }
+
+      void activate(std::function<float(float)> activation_fun) {
+        for (int i = 0; i < output.size.x; ++i) {
+          float input_val = 0;
+
+          for (int j = 0; j < input.size.x; ++j) {
+            for (int k = 0; k < input.size.y; ++k) {
+              for (int l = 0; l < input.size.z; ++l) {
+                int m = absorb_dumension({j, k, l});
+                input_val += input(j, k, l) * weights(m, i, 0);
+              }
+            }
+          }
+
+          input_layer[n] = input_val;
+          output(i, 0, 0) = activation_fun(input_val);
+        }
+      }
   };
 
 } // namespace layer
