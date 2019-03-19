@@ -16,6 +16,8 @@ namespace layer {
       linalg::Tensor<float> input_gradient;
       linalg::Tensor<float> input;
       linalg::Tensor<float> output;
+
+      void activate(std::function<float(float)> activation_fun) = 0;
   };
 
 } // namespace layer

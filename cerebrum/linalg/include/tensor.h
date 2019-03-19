@@ -2,7 +2,6 @@
 #define TENSOR_H_
 
 #include <array>
-#include <Eigen/Dense>
 #include <linalg/dim.h>
 #include <sstream>
 #include <stdexcept>
