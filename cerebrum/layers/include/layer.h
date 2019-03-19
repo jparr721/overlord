@@ -12,9 +12,9 @@ namespace layer {
   class Layer {
     public:
       const LayerType type = LT;
-      Tensor<float> input_gradient;
-      Tensor<float> input;
-      Tensor<float> output;
+      linalg::Tensor<float> input_gradient;
+      linalg::Tensor<float> input;
+      linalg::Tensor<float> output;
 
       template<int dim>
       Eigen::Vector<float, dim> feed_forward(
