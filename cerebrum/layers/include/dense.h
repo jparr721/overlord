@@ -2,7 +2,6 @@
 #define DENSE_H_
 
 #include <armadillo>
-#include <cassert>
 #include <cmath>
 #include <vector>
 
@@ -44,6 +43,10 @@ namespace layer {
         this->output = output;
       }
 
+      /// Backpropagate at each node and multiply our weights by our
+      /// selected gradient value.
+      ///
+      /// upstream_gradient {arma::vec} - Our error function calculation
       void backward(arma::vec& upstream_gradient) {
         arma::vec gradient_input_vec = arma::zeros(size * width * depth);
         for (size_t i = 0; i < (size * width * depth); ++i) {
@@ -64,6 +67,21 @@ namespace layer {
         accumulated_gradient_weights += gradient_weights;
         gradient_biases = upstream_gradient;
         accumulated_gradient_biases += gradient_biases;
+      }
+
+      /// This applies our gradients to each of the neurons in our
+      /// network which were accumulated during backpropagation.
+      ///
+      /// batch_size {size_t} - The number of training examples in our epoch
+      /// learning_rate {double} - The learning rate of our descent (into madness)
+      void apply_gradients_at_each_neuron(size_t batch_size, double learning_rate) {
+        // Update our weight matrix
+        weights = weights - learning_rate * accumulated_gradient_weights / batch_size;
+        // Update our biases
+        biases = biases - learning_rate * accumulated_gradient_biases / batch_size;
+
+        // We must reset our gradients since its based on the backward pass anyway.
+        _reset_accumulated_gradients();
       }
 
     private:
@@ -89,6 +107,7 @@ namespace layer {
         return candidate[0];
       }
 
+      /// Reset our gradient weight values at each node
       void _reset_accumulated_gradients() {
         accumulated_gradient_input = arma::zeros(size, width, depth);
         accumulated_gradient_weights = arma::zeros(num_outputs, size * width * depth);

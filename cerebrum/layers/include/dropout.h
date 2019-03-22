@@ -1,66 +1,59 @@
 #ifndef DROPOUT_H_
 #define DROPOUT_H_
 
+#include <armadillo>
 #include <random>
-#include <layers/layer_types.h>
-#include <linalg/dim.h>
-#include <linalg/tensor.h>
 
 namespace layer {
-#ifdef EMBEDDED
-  #pragma pack(push, 1)
-#endif
-  template<dim_t dim>
-  class DropoutLayer : public <LayerType::dropout>Layer {
+  class Dropout {
     public:
-      linalg::Tensor<bool> hitmap;
-      float activation_;
+      Dropout(size_t size, size_t width, size_t depth, float dp) :
+        size(size), width(width), depth(depth), dropout_probability(dp) {};
 
-      /// Dropout layers take the activation as an input parameter
-      /// which is the probability of a node being turned off
+      /// The drop function performs dropout on the data in the
+      /// input vector and returns it into the output vector
       ///
-      /// @param {flaot} activation - The activation probability
-      DropoutLayer(float activation) :
-        input(dim.x, dim.y, dim.z),
-        output(dim.x, dim.y, dim.z)
-        hitmap(dim.x, dim.y, dim.z)
-        input_gradient(dim.x, dim.y, dim.z)
-        activation_(activation) {}
-
-      void activate(linalg::Tensor<float>& input) {
+      /// input {arma::cube} - The input feature cube
+      /// output {arma::vec} - The transformed output vector
+      /// TODO(jparr721): Add a way to make this work for non-images (matrix or cube input)
+      void drop(arma::cube& input) {
         this->input = input;
-        activate();
+        _activate();
       }
-
-      /// Internal gradient optimization algorithm (backprop)
-      void calculate_gradients(linalg::Tensor<float>& next_gradient_layer) {
-        for (int i = 0; i < input.size.x * input.size.y * input.size.z; ++i) {
-          // Return our modified gradient into the new buffer with dropout considered
-          input_gradient.data[i] = hitmap.data[i] ? next_gradient_layer.data[i] : 0.0f;
-        }
-      }
-
-
     private:
+      size_t size;
+      size_t width;
+      size_t depth;
+
+      float dropout_probability;
+
+      arma::cube input;
+      arma::cube hitmap;
+      arma::cube output;
+      arma::vec flattened_output;
+
       /// Perform the dropout activation where each node in the layer
-      /// has a probability of being deactivated to prevent overfitting
-      void activate() {
-        // Calculate randomness with mersienne twister randomizer algorithm
+      /// has a probability of being set to 0 to help prevent overfitting
+      void _activate() {
+        // calculate randomization probability with the mersienne twister
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_real_distribution<float> dis(0.0, RAND_MAX);
+        std::uniform_real_distribution<float> dis(0.0, 1.0);
 
-        for (int i = 0; i < input.size.x * input.size.y * input.size.z; ++i) {
-
-          bool active = dis(gen)/(float)RAND_MAX <= activation_;
-          hitmap.data[i] = active;
-          out.data[i] = active ? in.data[i] : 0.0f;
+        for (int i = 0; i < size * width * depth; ++i) {
+          bool active = dis(gen) <= dropout_probability;
+          hitmap[i] = active;
+          output[i] = active ? input[i] : 0.0f;
         }
+
+        _flatten_output_features();
       }
+
+      void _flatten_output_features() {
+        flattened_output = arma::vectorise(output);
+      }
+
   };
 } // namespace layer
 
-#ifdef EMBEDDED
-  #pragma pack(pop)
-#endif
 #endif // DROPOUT_H_

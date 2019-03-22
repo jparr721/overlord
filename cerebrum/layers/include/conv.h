@@ -40,7 +40,7 @@ namespace layer {
       size_t size;
       size_t width;
       size_t depth;
-      size_t filter_size;
+      size_t filter_height;
       size_t filter_width;
       size_t horizontal_stride;
       size_t vertical_stride;
