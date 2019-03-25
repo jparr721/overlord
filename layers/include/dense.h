@@ -17,12 +17,12 @@ namespace layer {
 
       /// Dense layers take the inputs and construct a dense layer for
       /// a neural network architecture
-      /// size {size_t} - The number of nodes in the total model
+      /// height {size_t} - The number of nodes in the total model
       /// width {size_t} - The number of nodes in the given layer
       /// depth {size_t} - The number of layers in the neural net
-      Dense(size_t size, size_t width, size_t depth, size_t n_output):
-        size(size), width(width), depth(depth), num_outputs(n_output) {
-        weights = arma::zeros(num_outputs, size * width * depth);
+      Dense(size_t height, size_t width, size_t depth, size_t n_output):
+        height(height), width(width), depth(depth), num_outputs(n_output) {
+        weights = arma::zeros(num_outputs, height * width * depth);
 
         // Normalize our weights into the proper range
         weights.imbue([&]() { return _get_truncated_norm_dist_value(0.0, 1.0); });
@@ -48,14 +48,14 @@ namespace layer {
       ///
       /// upstream_gradient {arma::vec} - Our error function calculation
       void backward(arma::vec& upstream_gradient) {
-        arma::vec gradient_input_vec = arma::zeros(size * width * depth);
-        for (size_t i = 0; i < (size * width * depth); ++i) {
+        arma::vec gradient_input_vec = arma::zeros(height * width * depth);
+        for (size_t i = 0; i < (height * width * depth); ++i) {
           gradient_input_vec[i] = arma::dot(weights.col(i), upstream_gradient);
         }
 
-        arma::cube tmp((size * width * depth), 1, 1);
+        arma::cube tmp((height * width * depth), 1, 1);
         tmp.slice(0).col(0) = gradient_input_vec;
-        gradient_input = arma::reshape(tmp, size, width, depth);
+        gradient_input = arma::reshape(tmp, height, width, depth);
 
         accumulated_gradient_input += gradient_input;
 
@@ -72,20 +72,20 @@ namespace layer {
       /// This applies our gradients to each of the neurons in our
       /// network which were accumulated during backpropagation.
       ///
-      /// batch_size {size_t} - The number of training examples in our epoch
+      /// batch_height {size_t} - The number of training examples in our epoch
       /// learning_rate {double} - The learning rate of our descent (into madness)
-      void apply_gradients_at_each_neuron(size_t batch_size, double learning_rate) {
+      void apply_gradients_at_each_neuron(size_t batch_height, double learning_rate) {
         // Update our weight matrix
-        weights = weights - learning_rate * accumulated_gradient_weights / batch_size;
+        weights = weights - learning_rate * accumulated_gradient_weights / batch_height;
         // Update our biases
-        biases = biases - learning_rate * accumulated_gradient_biases / batch_size;
+        biases = biases - learning_rate * accumulated_gradient_biases / batch_height;
 
         // We must reset our gradients since its based on the backward pass anyway.
         _reset_accumulated_gradients();
       }
 
     private:
-      size_t size;
+      size_t height;
       size_t width;
       size_t depth;
       arma::cube input;
@@ -109,8 +109,8 @@ namespace layer {
 
       /// Reset our gradient weight values at each node
       void _reset_accumulated_gradients() {
-        accumulated_gradient_input = arma::zeros(size, width, depth);
-        accumulated_gradient_weights = arma::zeros(num_outputs, size * width * depth);
+        accumulated_gradient_input = arma::zeros(height, width, depth);
+        accumulated_gradient_weights = arma::zeros(num_outputs, height * width * depth);
         accumulated_gradient_biases = arma::zeros(num_outputs);
       }
   };

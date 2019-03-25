@@ -18,10 +18,3 @@ BOOST_AUTO_CASE(ConstructorTest) {
       1, // Vertical stride
       3); // Number of filters
 }
-
-BOOST_AUTO_TEST_VASE(ForwardPassTest) {
-  arma::cube input(3, 3, 1, arma::fill::zeros);
-  input.slice(0) = {{1, 2, 3}, {2, 3, 4}, {3, 4, 5}};
-
-
-}

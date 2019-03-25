@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/dense_layer_test.dir/test/dense_test.cc.o  -o bin/dense_layer_test /usr/lib/libboost_unit_test_framework.so /usr/lib/libarmadillo.so 

@@ -9,6 +9,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 find_package(Boost 1.69 COMPONENTS unit_test_framework REQUIRED)
 find_package(Armadillo 9.3 REQUIRED)
 
-include_directories(${Boost_INCLUDE_DIR})
+include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 
+add_executable(
+  dense_layer_test
+  test/dense_test.cc
+  )
+
+target_link_libraries(dense_layer_test LINK_PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(dense_layer_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
