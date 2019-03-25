@@ -1,3 +1,0 @@
-/home/ghost/ML/cerebrum/build/CMakeFiles/rebuild_cache.dir
-/home/ghost/ML/cerebrum/build/CMakeFiles/dense_layer_test.dir
-/home/ghost/ML/cerebrum/build/CMakeFiles/edit_cache.dir
