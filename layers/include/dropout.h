@@ -7,21 +7,20 @@
 namespace layer {
   class Dropout {
     public:
-      Dropout(size_t size, size_t width, size_t depth, float dp) :
-        size(size), width(width), depth(depth), dropout_probability(dp) {};
+      Dropout(size_t height, size_t width, size_t depth, float dp) :
+        height(height), width(width), depth(depth), dropout_probability(dp) {};
 
       /// The drop function performs dropout on the data in the
       /// input vector and returns it into the output vector
       ///
       /// input {arma::cube} - The input feature cube
       /// output {arma::vec} - The transformed output vector
-      /// TODO(jparr721): Add a way to make this work for non-images (matrix or cube input)
       void drop(arma::cube& input) {
         this->input = input;
         _activate();
       }
     private:
-      size_t size;
+      size_t height;
       size_t width;
       size_t depth;
 
@@ -40,7 +39,7 @@ namespace layer {
         std::mt19937 gen(rd());
         std::uniform_real_distribution<float> dis(0.0, 1.0);
 
-        for (int i = 0; i < size * width * depth; ++i) {
+        for (size_t i = 0u; i < height * width * depth; ++i) {
           bool active = dis(gen) <= dropout_probability;
           hitmap[i] = active;
           output[i] = active ? input[i] : 0.0f;
