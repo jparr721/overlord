@@ -4,11 +4,11 @@
 #include <boost/test/unit_test.hpp>
 #include "../layers/include/conv.h"
 
-#define DEBUG false
-#define DEBUG_PREFIX "[CONV LAYER TESTS ]\t"
+constexpr auto DEBUG = false;
+constexpr auto DEBUG_PREFIX = "[DENSE LAYERS TESTS]\t";
 
-BOOST_AUTO_CASE(ConstructorTest) {
-  Conv c(
+BOOST_AUTO_CASE(Constructor) {
+  layer::Conv c(
       5, // Input size
       5, // Input width
       3, // Input depth

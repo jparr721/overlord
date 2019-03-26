@@ -98,7 +98,7 @@ namespace layer {
       arma::vec accumulated_gradient_biases;
 
       /// Truncating our normal distribution value keeps us from having
-      /// any neurons that go out of the
+      /// any neurons that go out of the range of 0 to 1
       double _get_truncated_norm_dist_value(double mean, double variance) {
         double stddev = sqrt(variance);
         arma::mat candidate = {3.0 * stddev};
