@@ -76,7 +76,7 @@ namespace layer {
       /// learning_rate {double} - The learning rate of our descent (into madness)
       void apply_gradients_at_each_neuron(size_t batch_height, double learning_rate) {
         // Update our weight matrix
-        weights = weights - learning_rate * accumulated_gradient_weights / batch_height;
+        weights -= learning_rate * accumulated_gradient_weights / batch_height;
         // Update our biases
         biases = biases - learning_rate * accumulated_gradient_biases / batch_height;
 

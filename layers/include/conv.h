@@ -9,6 +9,11 @@
 namespace layer {
   class Conv {
     public:
+      arma::cube accumulated_gradient_input;
+
+      std::vector<arma::cube> filters;
+      std::vector<arma::cube> gradient_filters;
+
       Conv(
           size_t height,
           size_t width,
@@ -117,6 +122,14 @@ namespace layer {
         }
       }
 
+      void update_filter_weights(size_t batch_size, double learning_rate) {
+        for (size_t i = 0; i < num_filters; ++i) {
+          filters[i] -= learning_rate * (accumulated_gradient_filters[i]/batch_size);
+
+          _reset_accumulated_gradients();
+        }
+      }
+
     private:
       size_t height;
       size_t width;
@@ -127,13 +140,9 @@ namespace layer {
       size_t vertical_stride;
       size_t num_filters;
 
-      std::vector<arma::cube> filters;
-
       arma::cube input;
       arma::cube output;
       arma::cube gradient_input;
-      arma::cube accumulated_gradient_input;
-      std::vector<arma::cube> gradient_filters;
       std::vector<arma::cube> accumulated_gradient_filters;
 
       double _get_truncated_norm_dist_value(double mean, double variance) {

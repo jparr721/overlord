@@ -15,9 +15,10 @@ namespace layer {
       ///
       /// input {arma::cube} - The input feature cube
       /// output {arma::vec} - The transformed output vector
-      void drop(arma::cube& input) {
+      void drop(arma::cube& input, arma::vec& output) {
         this->input = input;
         _activate();
+        output = flattened_output;
       }
     private:
       size_t height;
