@@ -19,6 +19,7 @@ namespace layer {
         this->input = input;
         _activate();
         output = flattened_output;
+        this->output = output;
       }
     private:
       size_t height;
@@ -29,7 +30,7 @@ namespace layer {
 
       arma::cube input;
       arma::cube hitmap;
-      arma::cube output;
+      arma::vec output;
       arma::vec flattened_output;
 
       /// Perform the dropout activation where each node in the layer
