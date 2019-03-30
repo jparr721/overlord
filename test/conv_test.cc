@@ -18,3 +18,13 @@ BOOST_AUTO_CASE(Constructor) {
       1, // Vertical stride
       3); // Number of filters
 }
+
+BOOST_AUTO_TEST_CASE(Forward) {
+  arma::cube input(3, 3, 1, arma::fill::zeros);
+  input.slice(0) = {{1, 2, 3}, {2, 3, 4}, {3, 4, 5}};
+
+  arma::cube filter1(2, 2, 1, arma::fill::zeros);
+  filter1.slice(0) = {{1, 0}, {0, 1}};
+
+  arma::cube filter2(2, 2, 1, arma::fill::zeros)
+}
