@@ -3,12 +3,14 @@
 
 #include <cassert>
 #include <armadillo>
+#include <iostream>
 #include <vector>
 
 namespace layer {
   class Conv {
     public:
       arma::cube accumulated_gradient_input;
+      arma::cube gradient_input;
 
       std::vector<arma::cube> filters;
       std::vector<arma::cube> gradient_filters;
@@ -141,7 +143,6 @@ namespace layer {
 
       arma::cube input;
       arma::cube output;
-      arma::cube gradient_input;
       std::vector<arma::cube> accumulated_gradient_filters;
 
       double _get_truncated_norm_dist_value(double mean, double variance) {

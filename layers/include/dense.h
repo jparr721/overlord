@@ -72,13 +72,13 @@ namespace layer {
       /// This applies our gradients to each of the neurons in our
       /// network which were accumulated during backpropagation.
       ///
-      /// batch_height {size_t} - The number of training examples in our epoch
+      /// batch_size {size_t} - The number of training examples in our epoch
       /// learning_rate {double} - The learning rate of our descent (into madness)
-      void apply_gradients_at_each_neuron(size_t batch_height, double learning_rate) {
+      void apply_gradients_at_each_neuron(size_t batch_size, double learning_rate) {
         // Update our weight matrix
-        weights -= learning_rate * accumulated_gradient_weights / batch_height;
+        weights -= learning_rate * accumulated_gradient_weights / batch_size;
         // Update our biases
-        biases = biases - learning_rate * accumulated_gradient_biases / batch_height;
+        biases = biases - learning_rate * accumulated_gradient_biases / batch_size;
 
         // We must reset our gradients since its based on the backward pass anyway.
         _reset_accumulated_gradients();

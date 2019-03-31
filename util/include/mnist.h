@@ -17,8 +17,8 @@ namespace util {
 
     Mnist(const std::string& data_dir, double ratio = 0.9) : _data_dir(data_dir), _ratio(ratio) {
       assert(ratio <= 1.0 && ratio >= 0.0);
-      const std::string train_file = data_dir + "/train.csv";
-      const std::string test_file = data_dir + "/test.csv";
+      const std::string train_file = data_dir + "/mnist_train.csv";
+      const std::string test_file = data_dir + "/mnist_test.csv";
 
       arma::mat train_data_raw;
 

@@ -36,3 +36,11 @@ add_executable(
 
 target_link_libraries(file_reader_test LINK_PUBLIC ${Boost_LIBRARIES})
 target_link_libraries(file_reader_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
+
+add_executable(
+  network_test
+  test/network_test.cc
+  )
+
+target_link_libraries(network_test LINK_PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(network_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})

@@ -2,6 +2,7 @@
 #define BOOST_TEST_DYN_LINK
 
 #include <boost/test/unit_test.hpp>
+#include <iostream>
 #include <string>
 #include "../util/include/mnist.h"
 #include "../layers/include/cross_entropy.h"
@@ -15,12 +16,11 @@
 using namespace util;
 using namespace layer;
 
-constexpr auto DEBUG = false;
 constexpr auto DEBUG_PREFIX = "[FULL NETWORK TEST]\t";
 
 BOOST_AUTO_TEST_CASE(ConvMnist) {
   // Load in our csv data
-  Mnist mn("../data");
+  Mnist mn("../../data");
 
   auto train_data = mn.train_data;
   auto train_labels = mn.train_labels;
@@ -33,9 +33,9 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
   const size_t TRAIN_DATA_SIZE = train_data.size();
   const size_t VALIDATION_DATA_SIZE = validation_data.size();
   const size_t TEST_DATA_SIZE = test_data.size();
-  const float learning_rate = 0.05;
-  const size_t epochs = 100;
-  const size_t batch_size = 64;
+  const float LEARNING_RATE = 0.05;
+  const size_t EPOCHS = 10;
+  const size_t BATCH_SIZE = 64;
   const size_t NUM_BATCHES = TRAIN_DATA_SIZE / BATCH_SIZE;
 
   // Layers (TODO) Make a engine class and cache these
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
   // Output is 12x12x6
 
   // Input is 12x12x6
-  Conv c2(12, 12, 6, 5, 5, 1, 1, 16);
+  Conv c2(12, 12, 5, 5, 5, 1, 1, 16);
   // Output is 8x8x16
 
   // Relu 2
@@ -83,8 +83,120 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
   arma::cube r2Output = arma::zeros(8, 8, 16);
   arma::cube mp2Output = arma::zeros(4, 4, 16);
   arma::vec dOutput = arma::zeros(10);
-  arma::vec sOut = arma::zeros(10);
+  arma::vec sOutput = arma::zeros(10);
 
+
+  // Make loss and cumulative loss, cumulative loss totals loss over all examples in a minibatch
   double loss{0.0};
   double cumulative_loss{0.0};
+
+  for (size_t epoch = 0; epoch < EPOCHS; ++epoch) {
+    std::cout << DEBUG_PREFIX << "Epoch: " << epoch << std::endl;
+
+    for (size_t batch = 0; batch < NUM_BATCHES; ++batch) {
+      // Make a random batch of the input feature cube
+      arma::vec minibatch(BATCH_SIZE, arma::fill::randu);
+      minibatch *= (TRAIN_DATA_SIZE - 1);
+
+      for (size_t i = 0; i < BATCH_SIZE; ++i) {
+        std::cout << "Begin forward pass" << std::endl;
+        c1.forward(train_data[minibatch[i]], c1Output);
+        r1.forward(c1Output, r1Output);
+        std::cout << "here" << std::endl;
+        mp1.forward(r1Output, mp1Output);
+        std::cout << "here.5" << std::endl;
+        c2.forward(mp1Output, c2Output);
+        std::cout << "here2" << std::endl;
+        r2.forward(c2Output, r2Output);
+        std::cout << "here3" << std::endl;
+        mp2.forward(r2Output, mp2Output);
+        std::cout << "here4" << std::endl;
+        d.forward(mp2Output, dOutput);
+        dOutput /= 100;
+        s.forward(dOutput, sOutput);
+
+        // Use cross entropy to check our ouput ratio
+        loss = ce.forward(sOutput, train_labels[minibatch[i]]);
+        std::cout << "loss for epoch: " << loss << std::endl;
+        cumulative_loss += loss;
+
+        std::cout << "Begin backpropagation" << std::endl;
+        // Backpropagate
+        ce.backward();
+        arma::vec predicted_gradient_weight_distribution = ce.gradient_predicted_distribution;
+        s.backward(predicted_gradient_weight_distribution);
+        arma::vec gradient_weight_softmax_input = s.gradient_input;
+
+        d.backward(gradient_weight_softmax_input);
+        arma::cube gradient_weight_dense_input = d.gradient_input;
+
+        mp2.backward(gradient_weight_dense_input);
+        arma::cube gradient_weight_max_pooling_2_input = mp2.gradient_input;
+
+        r2.backward(gradient_weight_max_pooling_2_input);
+        arma::cube gradient_weight_relu_2_input = r2.gradient_input;
+
+        c2.backward(gradient_weight_relu_2_input);
+        arma::cube gradient_weight_conv_2_input = c2.gradient_input;
+
+        mp1.backward(gradient_weight_conv_2_input);
+        arma::cube gradient_weight_max_pooling_input = mp1.gradient_input;
+
+        r1.backward(gradient_weight_max_pooling_input);
+        arma::cube gradient_weight_relu_input = r1.gradient_input;
+
+        c1.backward(gradient_weight_relu_input);
+        arma::cube gradient_weight_conv_input = c1.gradient_input;
+      }
+
+      // Update network parameters
+      d.apply_gradients_at_each_neuron(BATCH_SIZE, LEARNING_RATE);
+      c1.update_filter_weights(BATCH_SIZE, LEARNING_RATE);
+      c2.update_filter_weights(BATCH_SIZE, LEARNING_RATE);
+    }
+
+   std::cout << DEBUG_PREFIX << "Training loss for epoch: " << epoch << ": " << cumulative_loss / (BATCH_SIZE * NUM_BATCHES) << std::endl;
+
+    // Compute training accuracy after each epoch
+    double correct = 0.0;
+    for (size_t i = 0; i < TRAIN_DATA_SIZE; ++i) {
+        c1.forward(train_data[i], c1Output);
+        r1.forward(c1Output, r1Output);
+        mp1.forward(r1Output, mp1Output);
+        c2.forward(mp1Output, c2Output);
+        r2.forward(c2Output, r2Output);
+        mp2.forward(r2Output, mp2Output);
+        d.forward(mp2Output, dOutput);
+        dOutput /= 100;
+        s.forward(dOutput, sOutput);
+
+      if (train_labels[i].index_max() == sOutput.index_max()) {
+        correct += 1.0;
+      }
+    }
+
+    std::cout << DEBUG_PREFIX << "Training accuracy: " << correct/TRAIN_DATA_SIZE << std::endl;
+
+    cumulative_loss = 0.0;
+    correct = 0.0;
+
+    for (size_t i = 0; i < VALIDATION_DATA_SIZE; ++i) {
+        c1.forward(validation_data[i], c1Output);
+        r1.forward(c1Output, r1Output);
+        mp1.forward(r1Output, mp1Output);
+        c2.forward(mp1Output, c2Output);
+        r2.forward(c2Output, r2Output);
+        mp2.forward(r2Output, mp2Output);
+        d.forward(mp2Output, dOutput);
+        dOutput /= 100;
+        s.forward(dOutput, sOutput);
+
+      if (validation_labels[i].index_max() == sOutput.index_max()) {
+        correct += 1.0;
+      }
+    }
+
+    std::cout << DEBUG_PREFIX << "Validation loss: " << cumulative_loss / (BATCH_SIZE * NUM_BATCHES) << std::endl;
+    std::cout << DEBUG_PREFIX << "Validation accuracy: " << correct / VALIDATION_DATA_SIZE << std::endl;
+  }
 }
