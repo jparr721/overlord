@@ -7,7 +7,7 @@
 constexpr auto DEBUG = false;
 constexpr auto DEBUG_PREFIX = "[DENSE LAYERS TESTS]\t";
 
-BOOST_AUTO_CASE(Constructor) {
+BOOST_AUTO_TEST_CASE(Constructor) {
   layer::Conv c(
       5, // Input size
       5, // Input width
@@ -26,5 +26,5 @@ BOOST_AUTO_TEST_CASE(Forward) {
   arma::cube filter1(2, 2, 1, arma::fill::zeros);
   filter1.slice(0) = {{1, 0}, {0, 1}};
 
-  arma::cube filter2(2, 2, 1, arma::fill::zeros)
+  arma::cube filter2(2, 2, 1, arma::fill::zeros);
 }

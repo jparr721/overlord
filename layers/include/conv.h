@@ -4,7 +4,6 @@
 #include <cassert>
 #include <armadillo>
 #include <vector>
-#include "../../errors/include/network_error.h"
 
 namespace layer {
   class Conv {
@@ -52,7 +51,7 @@ namespace layer {
 
         for (size_t filterx = 0; filterx < num_filters; ++filterx) {
           for (size_t i = 0; i <= height - filter_height; i+= vertical_stride) {
-            for (size_t j = 0; j = width - filter_width; j += horizontal_stride) {
+            for (size_t j = 0; j <= width - filter_width; j += horizontal_stride) {
               output((i/vertical_stride), (j/horizontal_stride), filterx) = arma::dot(
                   arma::vectorise(
                     input.subcube(i, j, 0,

@@ -1,15 +1,15 @@
 #ifndef BRINARY_CROSS_ENTROPY_H_
 #define BINARY_CROSS_ENTROPY_H_
 
+#include <armadillo>
 #include <cassert>
-#include <armadilo>
 
 namespace layer {
-  class BinaryCrossEntropy {
+  class CrossEntropy {
     public:
       arma::vec gradient_predicted_distribution;
 
-      BinaryCrossEntropy(size_t num_inputs) : num_inputs(num_inputs) {}
+      CrossEntropy(size_t num_inputs) : num_inputs(num_inputs) {}
 
       double forward(arma::vec& predicted_distribution, arma::vec& actual_distribution) {
         assert(predicted_distribution.n_elem == num_inputs);

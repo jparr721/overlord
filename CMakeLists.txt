@@ -22,8 +22,17 @@ target_link_libraries(dense_layer_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
 
 add_executable(
   conv_layer_test
-  text/conv_text.cc
+  test/conv_test.cc
   )
 
 target_link_libraries(conv_layer_test LINK_PUBLIC ${Boost_LIBRARIES})
 target_link_libraries(conv_layer_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
+
+add_executable(
+  file_reader_test
+  util/file_reader.cc
+  test/file_reader_test.cc
+  )
+
+target_link_libraries(file_reader_test LINK_PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(file_reader_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
