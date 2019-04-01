@@ -51,8 +51,6 @@ namespace layer {
                             (width - filter_width)/horizontal_stride + 1,
                             num_filters);
 
-        std::cout << input.n_cols << " " << input.n_rows << " " << input.n_slices << std::endl;
-        std::cout << depth << std::endl;
         for (size_t filterx = 0; filterx < num_filters; ++filterx) {
           for (size_t i = 0; i <= height - filter_height; i+= vertical_stride) {
             for (size_t j = 0; j <= width - filter_width; j += horizontal_stride) {
@@ -104,8 +102,6 @@ namespace layer {
         for (size_t i = 0; i < num_filters; ++i) {
           gradient_filters[i] = arma::zeros(filter_height, filter_width, depth);
         }
-        std::cout << gradient_filters[0].n_rows << " " << gradient_filters[0].n_cols << " "
-          << gradient_filters[0].n_slices << std::endl;
         for (size_t filterx = 0; filterx < num_filters; ++filterx) {
           for (size_t row = 0; row < output.n_rows; ++row) {
             for (size_t col = 0; col < output.n_cols; ++col) {
@@ -113,12 +109,10 @@ namespace layer {
               tmp = input.subcube(row * vertical_stride,
                                   col * horizontal_stride,
                                   0,
-                                  (row * vertical_stride) + height - 1,
-                                  (col * horizontal_stride) + width - 1,
+                                  (row * vertical_stride) + filter_height - 1,
+                                  (col * horizontal_stride) + filter_width - 1,
                                   depth - 1);
-              std::cout << "here?" << std::endl;
               gradient_filters[filterx] += upstream_gradient.slice(filterx)(row, col) * tmp;
-              std::cout << "here." << std::endl;
             }
           }
         }

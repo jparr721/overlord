@@ -103,7 +103,6 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
       minibatch *= (TRAIN_DATA_SIZE - 1);
 
       for (size_t i = 0; i < BATCH_SIZE; ++i) {
-        std::cout << "Begin forward pass" << std::endl;
         c1.forward(train_data[minibatch[i]], c1Output);
         r1.forward(c1Output, r1Output);
         mp1.forward(r1Output, mp1Output);
@@ -119,7 +118,6 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
         std::cout << "loss for epoch: " << loss << std::endl;
         cumulative_loss += loss;
 
-        std::cout << "Begin backpropagation" << std::endl;
         // Backpropagate
         ce.backward();
         arma::vec predicted_gradient_weight_distribution = ce.gradient_predicted_distribution;
@@ -132,19 +130,15 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
 
         mp2.backward(gradient_weight_dense_input);
         arma::cube gradient_weight_max_pooling_2_input = mp2.gradient_input;
-        std::cout << "here2" << std::endl;
 
         r2.backward(gradient_weight_max_pooling_2_input);
         arma::cube gradient_weight_relu_2_input = r2.gradient_input;
-        std::cout << "here3" << std::endl;
 
         c2.backward(gradient_weight_relu_2_input);
         arma::cube gradient_weight_conv_2_input = c2.gradient_input;
-        std::cout << "here" << std::endl;
 
         mp1.backward(gradient_weight_conv_2_input);
         arma::cube gradient_weight_max_pooling_input = mp1.gradient_input;
-        std::cout << "here1" << std::endl;
 
         r1.backward(gradient_weight_max_pooling_input);
         arma::cube gradient_weight_relu_input = r1.gradient_input;
