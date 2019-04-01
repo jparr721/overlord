@@ -51,13 +51,15 @@ namespace layer {
                             (width - filter_width)/horizontal_stride + 1,
                             num_filters);
 
+        std::cout << input.n_cols << " " << input.n_rows << " " << input.n_slices << std::endl;
+        std::cout << depth << std::endl;
         for (size_t filterx = 0; filterx < num_filters; ++filterx) {
           for (size_t i = 0; i <= height - filter_height; i+= vertical_stride) {
             for (size_t j = 0; j <= width - filter_width; j += horizontal_stride) {
               output((i/vertical_stride), (j/horizontal_stride), filterx) = arma::dot(
                   arma::vectorise(
-                    input.subcube(i, j, 0,
-                                  i + filter_height - 1, j + filter_width - 1, depth - 1)
+                      input.subcube(i, j, 0,
+                                    i+filter_height-1, j+filter_width-1, depth-1)
                     ),
                   arma::vectorise(filters[filterx]));
             }
@@ -100,20 +102,23 @@ namespace layer {
         gradient_filters.resize(num_filters);
 
         for (size_t i = 0; i < num_filters; ++i) {
-          gradient_filters[i] = arma::zeros(height, width, depth);
+          gradient_filters[i] = arma::zeros(filter_height, filter_width, depth);
         }
-
+        std::cout << gradient_filters[0].n_rows << " " << gradient_filters[0].n_cols << " "
+          << gradient_filters[0].n_slices << std::endl;
         for (size_t filterx = 0; filterx < num_filters; ++filterx) {
           for (size_t row = 0; row < output.n_rows; ++row) {
             for (size_t col = 0; col < output.n_cols; ++col) {
-              arma::cube tmp(arma::size(input), arma::fill::zeros);
+              arma::cube tmp(arma::size(filters[filterx]), arma::fill::zeros);
               tmp = input.subcube(row * vertical_stride,
                                   col * horizontal_stride,
                                   0,
                                   (row * vertical_stride) + height - 1,
                                   (col * horizontal_stride) + width - 1,
                                   depth - 1);
+              std::cout << "here?" << std::endl;
               gradient_filters[filterx] += upstream_gradient.slice(filterx)(row, col) * tmp;
+              std::cout << "here." << std::endl;
             }
           }
         }
@@ -126,9 +131,8 @@ namespace layer {
       void update_filter_weights(size_t batch_size, double learning_rate) {
         for (size_t i = 0; i < num_filters; ++i) {
           filters[i] -= learning_rate * (accumulated_gradient_filters[i]/batch_size);
-
-          _reset_accumulated_gradients();
         }
+        _reset_accumulated_gradients();
       }
 
     private:

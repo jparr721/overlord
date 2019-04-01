@@ -33,10 +33,10 @@ namespace layer {
                              (width - pooling_window_width) / horizontal_stride + 1,
                              depth);
 
-        for (size_t layer = 0; layer < depth; ++layer) {
+        for (size_t slice = 0; slice < depth; ++slice) {
           for (size_t row = 0; row <= height - pooling_window_height; row += vertical_stride) {
             for (size_t col = 0; col <= width - pooling_window_width; col += horizontal_stride) {
-              output.slice(layer)(row/vertical_stride, col/horizontal_stride) = input.slice(layer)
+              output.slice(slice)(row/vertical_stride, col/horizontal_stride) = input.slice(slice)
                 .submat(row, col, row + pooling_window_height - 1, col + pooling_window_width - 1).max();
 
             }

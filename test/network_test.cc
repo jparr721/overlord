@@ -30,12 +30,16 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
 
   auto test_data = mn.test_data;
 
+  std::cout << DEBUG_PREFIX << "Training Data Size: " << train_data.size() << std::endl;
+  std::cout << DEBUG_PREFIX << "Validation Data Size: " << validation_data.size() << std::endl;
+  std::cout << DEBUG_PREFIX << "Testing Data Size: " << test_data.size() << std::endl;
+
   const size_t TRAIN_DATA_SIZE = train_data.size();
   const size_t VALIDATION_DATA_SIZE = validation_data.size();
   const size_t TEST_DATA_SIZE = test_data.size();
   const float LEARNING_RATE = 0.05;
   const size_t EPOCHS = 10;
-  const size_t BATCH_SIZE = 64;
+  const size_t BATCH_SIZE = 10;
   const size_t NUM_BATCHES = TRAIN_DATA_SIZE / BATCH_SIZE;
 
   // Layers (TODO) Make a engine class and cache these
@@ -48,11 +52,11 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
   // Ouput is 24x24x6
 
   // Input is 24x24x6
-  MaxPooling mp1(24, 24, 5, 2, 2, 2, 2);
+  MaxPooling mp1(24, 24, 6, 2, 2, 2, 2);
   // Output is 12x12x6
 
   // Input is 12x12x6
-  Conv c2(12, 12, 5, 5, 5, 1, 1, 16);
+  Conv c2(12, 12, 6, 5, 5, 1, 1, 16);
   // Output is 8x8x16
 
   // Relu 2
@@ -102,15 +106,10 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
         std::cout << "Begin forward pass" << std::endl;
         c1.forward(train_data[minibatch[i]], c1Output);
         r1.forward(c1Output, r1Output);
-        std::cout << "here" << std::endl;
         mp1.forward(r1Output, mp1Output);
-        std::cout << "here.5" << std::endl;
         c2.forward(mp1Output, c2Output);
-        std::cout << "here2" << std::endl;
         r2.forward(c2Output, r2Output);
-        std::cout << "here3" << std::endl;
         mp2.forward(r2Output, mp2Output);
-        std::cout << "here4" << std::endl;
         d.forward(mp2Output, dOutput);
         dOutput /= 100;
         s.forward(dOutput, sOutput);
@@ -124,6 +123,7 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
         // Backpropagate
         ce.backward();
         arma::vec predicted_gradient_weight_distribution = ce.gradient_predicted_distribution;
+
         s.backward(predicted_gradient_weight_distribution);
         arma::vec gradient_weight_softmax_input = s.gradient_input;
 
@@ -132,15 +132,19 @@ BOOST_AUTO_TEST_CASE(ConvMnist) {
 
         mp2.backward(gradient_weight_dense_input);
         arma::cube gradient_weight_max_pooling_2_input = mp2.gradient_input;
+        std::cout << "here2" << std::endl;
 
         r2.backward(gradient_weight_max_pooling_2_input);
         arma::cube gradient_weight_relu_2_input = r2.gradient_input;
+        std::cout << "here3" << std::endl;
 
         c2.backward(gradient_weight_relu_2_input);
         arma::cube gradient_weight_conv_2_input = c2.gradient_input;
+        std::cout << "here" << std::endl;
 
         mp1.backward(gradient_weight_conv_2_input);
         arma::cube gradient_weight_max_pooling_input = mp1.gradient_input;
+        std::cout << "here1" << std::endl;
 
         r1.backward(gradient_weight_max_pooling_input);
         arma::cube gradient_weight_relu_input = r1.gradient_input;

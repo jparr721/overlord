@@ -29,6 +29,9 @@ namespace layer {
 
         // Use a bias of zero unless otherwise specified
         biases = arma::zeros(num_outputs);
+
+        // Initialize our gradient values
+        _reset_accumulated_gradients();
       }
 
       void forward(arma::cube& input, arma::vec& output) {
@@ -61,7 +64,7 @@ namespace layer {
 
         gradient_weights = arma::zeros(arma::size(weights));
         for (size_t i = 0; i < gradient_weights.n_rows; ++i) {
-          gradient_weights.row(i) = vectorise(input).t() * upstream_gradient[i];
+          gradient_weights.row(i) = arma::vectorise(input).t() * upstream_gradient[i];
         }
 
         accumulated_gradient_weights += gradient_weights;
