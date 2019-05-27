@@ -7,23 +7,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 find_package(Boost 1.69 COMPONENTS unit_test_framework REQUIRED)
-find_package(Armadillo 9.3 REQUIRED)
+find_package(Eigen 3.3 REQUIRED NO_MODULE)
 
 include_directories(${Boost_INCLUDE_DIRS})
-include_directories(${ARMADILLO_INCLUDE_DIRS})
 
-add_executable(
-  dense_layer_test
-  test/dense_test.cc
-  )
-
-target_link_libraries(dense_layer_test LINK_PUBLIC ${Boost_LIBRARIES})
-target_link_libraries(dense_layer_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
-
-add_executable(
-  conv_layer_test
-  text/conv_text.cc
-  )
-
-target_link_libraries(conv_layer_test LINK_PUBLIC ${Boost_LIBRARIES})
-target_link_libraries(conv_layer_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
+add_subdirectory(layers)
