@@ -3,7 +3,7 @@
 
 #include <Eigen/Dense>
 #include <functional>
-#include <layers/base>
+#include <layers/base.h>
 #include <string>
 
 namespace cerebrum {
@@ -38,4 +38,4 @@ namespace cerebrum {
 
 } // namespace cerebrum
 
-#endif
+#endif // DENSE_H_
