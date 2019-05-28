@@ -12,3 +12,10 @@ find_package(Eigen 3.3 REQUIRED NO_MODULE)
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_subdirectory(layers)
+
+add_executable(
+  initializer_test
+  test/initializers_test.cc
+  )
+target_link_libraries(initializer_test LINK_PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(initializer_test LINK_PUBLIC Eigen3::Eigen)

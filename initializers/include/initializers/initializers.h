@@ -13,17 +13,12 @@ namespace cerebrum {
           std::string& initializer,
           Eigen::VectorXf& weights);
 
-      // TODO(jparr721) - Docs here
       static void GlorotUniform(Eigen::VectorXf& weights);
-
-      // TODO(jparr721) - Docs here
       static void GlorotNormal(Eigen::VectorXf& weights);
-
-      // TODO(jparr721) - Docs here
       static void HeUniform(Eigen::VectorXf& weights);
-
-      // TODO(jparr721) - Docs here
       static void HeNormal(Eigen::VectorXf& weights);
+      static void RandomNormal(Eigen::VectorXf& weights);
+      static void RandomUniform(Eigen::VectorXf& weights);
     private:
       const unordered_map<
         std::string,
@@ -32,6 +27,8 @@ namespace cerebrum {
           { "glorot_normal", GlorotNormal },
           { "he_uniform", HeUniform },
           { "he_normal", HeNormal },
+          { "random_uniform", RandomUniform },
+          { "random_normal", RandomNormal },
         };
   };
 } // namespace cerebrum
