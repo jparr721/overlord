@@ -9,6 +9,8 @@ namespace cerebrum {
       Base(const int inputs, const int outputs, const bool bias=true)
         : inputs_(inputs), outputs_(outputs), bias_(bias) {};
 
+      virtual ~Base();
+
       virtual void build() = 0;
       virtual void forward() = 0;
       virtual void backward() = 0;
