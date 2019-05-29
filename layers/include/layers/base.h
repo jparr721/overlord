@@ -12,7 +12,7 @@ namespace cerebrum {
       virtual ~Base();
 
       virtual void build() = 0;
-      virtual void forward() = 0;
+      virtual void forward(Eigen::VectorXf& input) = 0;
       virtual void backward() = 0;
     private:
       // The weights of our layer
