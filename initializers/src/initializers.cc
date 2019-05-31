@@ -19,7 +19,7 @@ namespace cerebrum {
 
   // TODO(jparr721) - Docs here
   void Initializers::RandomNormal(Eigen::VectorXf& weights) {
-    std::default_random_engine_generator gen;
+    std::default_random_engine gen;
     std::normal_distribution<float> norm(0.0, 1.0);
 
     for (auto& weight : weights) {
@@ -29,7 +29,7 @@ namespace cerebrum {
 
   // TODO(jparr721) - Docs here
   void Initializers::RandomUniform(Eigen::VectorXf& weights) {
-    std::default_random_engine_generator gen;
+    std::default_random_engine gen;
     std::uniform_real_distribution<float> norm(0.0, 1.0);
 
     for (auto& weight : weights) {
@@ -46,7 +46,7 @@ namespace cerebrum {
 
   // TODO(jparr721) - Docs here
   void Initializers::HeUniform(Eigen::VectorXf& weights) {
-    std::default_random_engine_generator gen;
+    std::default_random_engine gen;
     std::uniform_real_distribution<float> norm(0.0, 1.0);
 
     for (auto& weight : weights) {
@@ -55,8 +55,8 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void initializers::HeNormal(eigen::vectorxf& weights) {
-    std::default_random_engine_generator gen;
+  void Initializers::HeNormal(Eigen::Vectorxf& weights) {
+    std::default_random_engine gen;
     std::normal_distribution<float> norm(0.0, 1.0);
 
     for (auto& weight : weights) {
@@ -65,8 +65,8 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void initializers::GlorotUniform(eigen::vectorxf& weights) {
-    std::default_random_engine_generator gen;
+  void Initializers::GlorotUniform(Eigen::Vectorxf& weights) {
+    std::default_random_engine gen;
     std::uniform_real_distribution<float> norm(0.0, 1.0);
 
     for (auto& weight : weights) {
@@ -75,8 +75,8 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void initializers::GlorotNormal(eigen::vectorxf& weights) {
-    std::default_random_engine_generator gen;
+  void Initializers::GlorotNormal(Eigen::Vectorxf& weights) {
+    std::default_random_engine gen;
     std::normal_distribution<float> norm(0.0, 1.0);
 
     for (auto& weight : weights) {

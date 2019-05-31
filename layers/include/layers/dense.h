@@ -1,7 +1,7 @@
 #ifndef DENSE_H_
 #define DENSE_H_
 
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 #include <functional>
 #include <layers/base.h>
 #include <string>
@@ -35,6 +35,7 @@ namespace cerebrum {
       std::string activity_regularizer_;
       std::string kernel_constraint_;
       std::string bias_constraint_;
+  };
 
 } // namespace cerebrum
 

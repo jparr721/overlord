@@ -7,11 +7,16 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 find_package(Boost 1.69 COMPONENTS unit_test_framework REQUIRED)
-find_package(Eigen 3.3 REQUIRED NO_MODULE)
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
-include_directories(${Boost_INCLUDE_DIRS})
+include_directories(
+  "${PROJECT_SOURCE_DIR}"
+  "${PROJECT_BINARY_DIR}"
+  ${Boost_INCLUDE_DIRS})
 
 add_subdirectory(layers)
+add_subdirectory(activations)
+add_subdirectory(initializers)
 
 add_executable(
   initializer_test

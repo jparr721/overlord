@@ -1,4 +1,4 @@
-#include <layers/dense>
+#include <layers/dense.h>
 
 namespace cerebrum {
   void Dense::build() {
