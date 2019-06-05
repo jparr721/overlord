@@ -1,62 +1,70 @@
 #define BOOST_TEST_MODULE InitializersTests
 #define BOOST_TEST_DYN_LINK
 
-#include <boost/test/unit_test.hpp>
-#include <Eigen/Dense>
-#include <initializers/initializers.h>
+#include <eigen3/Eigen/Dense>
 #include <iostream>
+#include <string>
+#include "../initializers/include/initializers/initializers.h"
+#include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE(Constructor) {
-  Eigen::Vector4f weights = Eigen::Vector4f::Zero();
+  Eigen::VectorXf weights = Eigen::VectorXf::Zero(4);
+  std::string type = "glorot_uniform";
   cerebrum::Initializers i(
-      "glorot_uniform",
+      type,
       weights);
 }
 
 BOOST_AUTO_TEST_CASE(GlorotUniformWorks) {
-  Eigen::Vector4f weights = Eigen::Vector4f::Zero();
+  Eigen::VectorXf weights = Eigen::VectorXf::Zero(4);
+  std::string type = "glorot_uniform";
   cerebrum::Initializers i(
-      "glorot_uniform",
+      type,
       weights);
   std::cout << weights << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(GlorotNormalWorks) {
-  Eigen::Vector4f weights = Eigen::Vector4f::Zero();
+  Eigen::VectorXf weights = Eigen::VectorXf::Zero(4);
+  std::string type = "glorot_normal";
   cerebrum::Initializers i(
-      "glorot_normal",
+      type,
       weights);
   std::cout << weights << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(HeUniformWorks) {
-  Eigen::Vector4f weights = Eigen::Vector4f::Zero();
+  Eigen::VectorXf weights = Eigen::VectorXf::Zero(4);
+  std::string type = "he_uniform";
   cerebrum::Initializers i(
-      "he_uniform",
+      type,
       weights);
   std::cout << weights << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(HeNormalWorks) {
-  Eigen::Vector4f weights = Eigen::Vector4f::Zero();
+  Eigen::VectorXf weights = Eigen::VectorXf::Zero(4);
+  std::string type = "he_normal";
   cerebrum::Initializers i(
-      "he_normal",
+      type,
       weights);
   std::cout << weights << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(RandomUniformWorks) {
-  Eigen::Vector4f weights = Eigen::Vector4f::Zero();
+  Eigen::VectorXf weights = Eigen::VectorXf::Zero(4);
+  std::string type = "random_uniform";
   cerebrum::Initializers i(
-      "random_uniform",
+      type,
       weights);
   std::cout << weights << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(RandomNormalWorks) {
-  Eigen::Vector4f weights = Eigen::Vector4f::Zero();
+  Eigen::VectorXf weights = Eigen::VectorXf::Zero(4);
+  std::string type = "random_normal";
   cerebrum::Initializers i(
-      "random_normal",
+      type,
       weights);
   std::cout << weights << std::endl;
 }

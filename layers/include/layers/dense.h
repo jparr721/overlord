@@ -10,6 +10,8 @@ namespace cerebrum {
   class Dense : public Base {
     public:
       Dense(
+          const int inputs,
+          const int outputs,
           const std::string& activation="relu",
           const bool use_bias=true,
           const std::string& kernel_initializer="glorot_uniform",
@@ -25,7 +27,12 @@ namespace cerebrum {
         bias_regularizer_(bias_regularizer),
         activity_regularizer_(activity_regularizer),
         kernel_constraint_(kernel_constraint),
-        bias_constraint_(bias_constraint) {};
+        bias_constraint_(bias_constraint),
+        Base(inputs, outputs, use_bias) {};
+
+      virtual ~Dense();
+      virtual void build();
+      virtual void forward(Eigen::VectorXf& input);
 
     private:
       std::string kernel_initializer_;

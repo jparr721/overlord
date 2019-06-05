@@ -11,10 +11,10 @@ namespace cerebrum {
         initializer.begin(), ::tolower);
 
     // Get the initializer by name
-    auto initializer = functions.at(initializer);
+    auto initializer_ = functions.at(initializer);
 
     // Execute on the weights
-    initializer(weights);
+    initializer_(weights);
   }
 
   // TODO(jparr721) - Docs here
@@ -22,8 +22,8 @@ namespace cerebrum {
     std::default_random_engine gen;
     std::normal_distribution<float> norm(0.0, 1.0);
 
-    for (auto& weight : weights) {
-      weight = norm(gen);
+    for (int i = 0u; i < weights.size(); ++i) {
+      weights[i] = norm(gen);
     }
   }
 
@@ -32,15 +32,15 @@ namespace cerebrum {
     std::default_random_engine gen;
     std::uniform_real_distribution<float> norm(0.0, 1.0);
 
-    for (auto& weight : weights) {
-      weight = norm(gen);
+    for (int i = 0u; i < weights.size(); ++i) {
+      weights[i] = norm(gen);
     }
   }
 
   // TODO(jparr721) - Docs here
   void Initializers::Zeros(Eigen::VectorXf& weights) {
-    for (auto& weight : weights) {
-      weight = 0.0;
+    for (int i = 0u; i < weights.size(); ++i) {
+      weights[i] = 0.0;
     }
   }
 
@@ -49,38 +49,38 @@ namespace cerebrum {
     std::default_random_engine gen;
     std::uniform_real_distribution<float> norm(0.0, 1.0);
 
-    for (auto& weight : weights) {
-      weight = norm(gen) * std::sqrt(2/weights.size());
+    for (int i = 0u; i < weights.size(); ++i) {
+      weights[i] = norm(gen) * std::sqrt(2/weights.size());
     }
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::HeNormal(Eigen::Vectorxf& weights) {
+  void Initializers::HeNormal(Eigen::VectorXf& weights) {
     std::default_random_engine gen;
     std::normal_distribution<float> norm(0.0, 1.0);
 
-    for (auto& weight : weights) {
-      weight = norm(gen) * std::sqrt(2/weights.size());
+    for (int i = 0u; i < weights.size(); ++i) {
+      weights[i] = norm(gen) * std::sqrt(2/weights.size());
     }
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::GlorotUniform(Eigen::Vectorxf& weights) {
+  void Initializers::GlorotUniform(Eigen::VectorXf& weights) {
     std::default_random_engine gen;
     std::uniform_real_distribution<float> norm(0.0, 1.0);
 
-    for (auto& weight : weights) {
-      weight = norm(gen) * std::sqrt(1/weights.size());
+    for (int i = 0u; i < weights.size(); ++i) {
+      weights[i] = norm(gen) * std::sqrt(1/weights.size());
     }
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::GlorotNormal(Eigen::Vectorxf& weights) {
+  void Initializers::GlorotNormal(Eigen::VectorXf& weights) {
     std::default_random_engine gen;
     std::normal_distribution<float> norm(0.0, 1.0);
 
-    for (auto& weight : weights) {
-      weight = norm(gen) * std::sqrt(1/weights.size());
+    for (int i = 0u; i < weights.size(); ++i) {
+      weights[i] = norm(gen) * std::sqrt(1/weights.size());
     }
   }
 }
