@@ -12,15 +12,15 @@ namespace cerebrum {
       Dense(
           const int inputs,
           const int outputs,
-          const std::string& activation="relu",
           const bool use_bias=true,
-          const std::string& kernel_initializer="glorot_uniform",
-          const std::string& bias_initializer="zeros",
-          const std::string& kernel_regularizer=nullptr,
-          const std::string& bias_regularizer=nullptr,
-          const std::string& activity_regularizer=nullptr,
-          const std::string& kernel_constraint=nullptr,
-          const std::string& bias_constraint=nullptr) :
+          std::string& activation="relu",
+          std::string& kernel_initializer="glorot_uniform",
+          std::string& bias_initializer="zeros",
+          std::string& kernel_regularizer=nullptr,
+          std::string& bias_regularizer=nullptr,
+          std::string& activity_regularizer=nullptr,
+          std::string& kernel_constraint=nullptr,
+          std::string& bias_constraint=nullptr) :
         kernel_initializer_(kernel_initializer),
         bias_initializer_(bias_initializer),
         kernel_regularizer_(kernel_regularizer),
