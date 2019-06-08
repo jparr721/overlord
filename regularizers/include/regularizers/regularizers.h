@@ -2,7 +2,9 @@
 #define REGULARIZERS_H_
 
 #include <eigen3/Eigen/Dense>
+#include <functional>
 #include <string>
+#include <unordered_map>
 
 ////////////////////////////////////////////////////
 // Regularizers help us avoid overfitting by penalizing
@@ -23,11 +25,21 @@
 
 namespace cerebrum {
   class Regularizers {
-    Regularizers(std::string& regulaizer, Eigen::VectorXf& weights);
+    public:
+      Regularizers(std::string& regulaizer, Eigen::VectorXf& weights);
 
-    void L1(Eigen::VectorXf& weights);
-    void L2(Eigen::VectorXf& weights);
-    void Dropout(Eigen::VectorXf& weights);
+      static void L1(Eigen::VectorXf& weights);
+      static void L2(Eigen::VectorXf& weights);
+      static void Dropout(Eigen::VectorXf& weights);
+
+    private:
+      const std::unordered_map<
+        std::string,
+        std::function<void(Eigen::VectorXf& weights)>> functions {
+          { "l1", L1 },
+          { "l2", L2 },
+          { "dropout", Dropout },
+        };
   };
 } // namespace cerebrum
 
