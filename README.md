@@ -1,32 +1,4 @@
-# Cerebrum
-C++ Neural Networking library.
+<h1 align="center">Rhodium.<span></span>rs<h1>
+<div align="center">High-Speed Neural Networks in Rust.</div>
 
-## Getting Started
-### Requirements
-- Boost >= 1.69
-- Armadillo >= 9.3
-- cmake >= 3.9
-- Boost Unit Test Framework
-
-### Compiling
-You can get the dependencies on arch linux via:
-```
-yay -S boost armadillo cmake 
-```
-This project can be cloned anywhere on your system.
-
-CMake supports out of source builds, so we can make a build directory you may also see a warning if you do an in source build because it's gross to do that. Inside of the project directory, do the following:
-```
-mkdir build
-cd build
-cmake ..
-make
-```
-To run the tests:
-```
-cd build/bin
-./executable_name
-```
-
-### Using this library
-The lib is currently still very much in the ironing phase, but it now works which is super cool. Please follow the example in the unit test [Here](https://github.com/jparr721/cerebrum/blob/master/test/network_test.cc) to get your very own neural network started. 
+Rhodium.<span></span>rs helps developers be more productive when doing machine learning in rust. Long gone are the days of arduous debugging models in C/C++ only to have them sefault into oblivion. Tensorflow fills a broad spectrum, but only for python. Rust is powerful and deserves a tool that matches this power and beauty.
