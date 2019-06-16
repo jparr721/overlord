@@ -1,4 +1,3 @@
-extern crate nalgebra as na;
-
-#[macro_use]
+extern crate ndarray;
+mod layers;
 mod activations;

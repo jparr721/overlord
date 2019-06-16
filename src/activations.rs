@@ -1,14 +1,28 @@
-use std::f64
+use std::f64;
 
-pub fn ReLu(z: f64) -> f64 {
-    let zero: f64 = 0.0
-    zero.max(z)
+enum ActivationKind {
+    ReLu,
+    Sigmoid,
+    Tanh,
 }
 
-pub fn Sigmoid(z: f64) {
+fn ReLu(z: f64) -> f64 {
+    (0.0_f64).max(z)
+}
+
+fn Sigmoid(z: f64) -> f64 {
     (1.0 / 1.0 + -z.exp())
 }
 
-pub fn Tanh(z: f64) {
+fn Tanh(z: f64) -> f64 {
     (1.0 - z.tanh().powf(2.0))
+}
+
+pub fn make_activation(activation: Option<ActivationKind>) -> Option<fn(f64) -> f64> {
+    match ActivationKind {
+        ActivationKind::ReLu => Some(ReLu),
+        ActivationKind::Sigmoid => Some(Sigmoid),
+        ActivationKind::Tanh => Some(Tang),
+        _ => None,
+    }
 }
