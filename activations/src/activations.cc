@@ -17,15 +17,18 @@ namespace cerebrum {
 
   // TODO(jparr721) - Docs here
   void Activations::ReLu(Eigen::VectorXf& input_layer) {
-    for (size_t i = 0; i < input_layer.size(); ++i) {
-      input_layer[i] = std::max(input_layer[i], 0.0);
+    for (auto i = 0; i < input_layer.size(); ++i) {
+
     }
+    /* for (size_t i = 0; i < input_layer.size(); ++i) { */
+    /*   input_layer(i) = std::max(input_layer(i), 0.0); */
+    /* } */
   }
 
   // TODO(jparr721) - Docs here
   void Activations::Sigmoid(Eigen::VectorXf& input_layer) {
     for (size_t i = 0; i < input_layer.size(); ++i) {
-      input_layer[i] = 1 / 1 + std::exp(input_layer[i]);
+      input_layer(i) = 1 / 1 + std::exp(input_layer(i));
     }
   }
 
