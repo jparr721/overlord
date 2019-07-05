@@ -1,10 +1,19 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
-project(cerebrum LANGUAGES CXX)
+project(cerebrum LANGUAGES CXX CUDA)
+
+include(CheckLanguage)
+check_language(CUDA)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+if(NOT DEFINED CMAKE_CUDA_STANDARD)
+  set(CMAKE_CUDA_STANDARD 14)
+  set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+endif()
 
 find_package(Boost 1.69 COMPONENTS unit_test_framework REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
@@ -17,6 +26,7 @@ include_directories(
 add_subdirectory(layers)
 add_subdirectory(activations)
 add_subdirectory(initializers)
+add_subdirectory(ga)
 
 add_executable(
   initializer_test

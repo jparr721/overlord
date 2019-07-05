@@ -1,7 +1,8 @@
-#include <memory>
-#include <initiailizers/initializers.h>
-#include <iostream>
+#include <initializers/initializers.h>
 #include <layers/dense.h>
+
+#include <memory>
+#include <iostream>
 
 namespace cerebrum {
   void Dense::build() {
