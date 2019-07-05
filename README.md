@@ -4,14 +4,15 @@ C++ Neural Networking library.
 ## Getting Started
 ### Requirements
 - Boost >= 1.69
-- Armadillo >= 9.3
+- Eigen >= 3.3
 - cmake >= 3.9
+- Ninja
 - Boost Unit Test Framework
 
 ### Compiling
 You can get the dependencies on arch linux via:
 ```
-yay -S boost armadillo cmake 
+yay -S boost eigen ninja cmake clang
 ```
 This project can be cloned anywhere on your system.
 
@@ -19,9 +20,15 @@ CMake supports out of source builds, so we can make a build directory you may al
 ```
 mkdir build
 cd build
-cmake ..
+cmake -GNinja ..
 make
 ```
+
+If you want to install (not recommended until release is ready)
+```
+make install
+```
+
 To run the tests:
 ```
 cd build/bin
