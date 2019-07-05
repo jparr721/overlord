@@ -36,4 +36,4 @@ cd build/bin
 ```
 
 ### Using this library
-The lib is currently still very much in the ironing phase, but it now works which is super cool. Please follow the example in the unit test [Here](https://github.com/jparr721/cerebrum/blob/master/test/network_test.cc) to get your very own neural network started. 
+The lib is currently still very much in the ironing phase, any .so files that compile should work but, if not, file an issue.
