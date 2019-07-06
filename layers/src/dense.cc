@@ -1,5 +1,5 @@
-/* #include <initializers/initializers.h> */
 #include <layers/dense.h>
+#include <initializers/initializers.h>
 
 #include <memory>
 #include <iostream>
@@ -15,5 +15,6 @@ namespace cerebrum {
 
   Eigen::VectorXf Dense::forward(Eigen::VectorXf& input) {
     auto output = (input * weights) + biases;
+    return input;
   }
 } // namespace cerebrum

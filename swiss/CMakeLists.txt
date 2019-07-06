@@ -1,9 +1,9 @@
-project(initializers)
+project(swiss)
 file(GLOB SOURCES "src/*.cc")
 
-add_library(initializers SHARED ${SOURCES})
+add_library(swiss SHARED ${SOURCES})
 
-target_include_directories(initializers
+target_include_directories(${PROJECT_NAME}
   PUBLIC
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -16,13 +16,6 @@ install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-
-target_link_libraries(${PROJECT_NAME}
-  swiss
-)
-
-enable_testing()
-add_subdirectory(test)
 
 install(DIRECTORY include/ DESTINATION "${INSTALL_INCLUDE_DIR}")
 install(EXPORT ${PROJECT_NAME}Config DESTINATION share/${PROJECT_NAME}/cmake)

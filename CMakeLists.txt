@@ -9,11 +9,27 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(INSTALL_LIB_DIR lib CACHE PATH "Install directory for library code")
+set(INSTALL_BIN_DIR CACHE PATH "Install directory for executables")
+set(INSTALL_INCLUDE_DIR include CACHE PATH "Instal directory for header files")
+
+if(WIN32 AND NOT CYGWIN)
+  set(DEF_INSTALL_CMAKE_DIR CMake)
+else()
+  set(DEF_INSTALL_CMAKE_DIR lib/CMake/cerebrum)
+endif()
 
 if(NOT DEFINED CMAKE_CUDA_STANDARD)
   set(CMAKE_CUDA_STANDARD 14)
   set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 endif()
+
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
 
 find_package(Boost 1.69 COMPONENTS unit_test_framework REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
@@ -21,16 +37,12 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 include_directories(
   "${PROJECT_SOURCE_DIR}"
   "${PROJECT_BINARY_DIR}"
-  ${Boost_INCLUDE_DIRS})
+  ${Boost_INCLUDE_DIRS}
+)
 
 add_subdirectory(layers)
+add_subdirectory(swiss)
 add_subdirectory(activations)
 add_subdirectory(initializers)
+add_subdirectory(regularizers)
 add_subdirectory(ga)
-
-add_executable(
-  initializer_test
-  test/initializers_test.cc
-  )
-target_link_libraries(initializer_test LINK_PUBLIC ${Boost_LIBRARIES})
-target_link_libraries(initializer_test LINK_PUBLIC Eigen3::Eigen)
