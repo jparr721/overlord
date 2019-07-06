@@ -1,14 +1,15 @@
 #include <algorithm>
 #include <cmath>
-#include <initializers/initializers.h>
 #include <random>
+
+#include <initializers/initializers.h>
+#include <swiss/strings.h>
 
 namespace cerebrum {
   Initializers::Initializers(
       std::string& initializer,
       Eigen::VectorXf& weights) {
-    std::transform(initializer.begin(), initializer.end(),
-        initializer.begin(), ::tolower);
+    swiss::to_lower(initializer);
 
     // Get the initializer by name
     auto initializer_ = functions.at(initializer);

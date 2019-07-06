@@ -4,16 +4,16 @@
 #include <eigen3/Eigen/Dense>
 #include <iostream>
 #include <string>
-#include "../initializers/include/initializers/initializers.h"
+#include "../include/initializers/initializers.h"
 #include <boost/test/unit_test.hpp>
 
-/* BOOST_AUTO_TEST_CASE(Constructor) { */
-/*   Eigen::VectorXf weights = Eigen::VectorXf::Zero(4); */
-/*   std::string type = "glorot_uniform"; */
-/*   cerebrum::Initializers i( */
-/*       type, */
-/*       weights); */
-/* } */
+BOOST_AUTO_TEST_CASE(Constructor) {
+  Eigen::VectorXf weights = Eigen::VectorXf::Zero(4);
+  std::string type = "glorot_uniform";
+  cerebrum::Initializers i(
+      type,
+      weights);
+}
 
 /* BOOST_AUTO_TEST_CASE(GlorotUniformWorks) { */
 /*   Eigen::VectorXf weights = Eigen::VectorXf::Zero(4); */
