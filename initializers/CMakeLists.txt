@@ -21,6 +21,9 @@ target_link_libraries(${PROJECT_NAME}
   swiss
 )
 
+enable_testing()
+add_subdirectory(test)
+
 install(DIRECTORY include/ DESTINATION "${INSTALL_INCLUDE_DIR}")
 install(EXPORT ${PROJECT_NAME}Config DESTINATION share/${PROJECT_NAME}/cmake)
 export(TARGETS ${PROJECT_NAME} FILE ${PROJECT_NAME}Config.cmake)
