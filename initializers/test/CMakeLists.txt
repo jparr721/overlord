@@ -10,4 +10,5 @@ target_link_libraries(
   ${Boost_LIBRARIES}
   Eigen3::Eigen
   initializers
+  layers
 )

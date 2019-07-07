@@ -7,23 +7,24 @@
 #include <unordered_map>
 
 namespace cerebrum {
+  template<typename WeightType>
   class Initializers {
     public:
       Initializers(
           std::string& initializer,
-          Eigen::VectorXf& weights);
+          WeightType& weights);
 
-      static void Zeros(Eigen::VectorXf& weights);
-      static void GlorotUniform(Eigen::VectorXf& weights);
-      static void GlorotNormal(Eigen::VectorXf& weights);
-      static void HeUniform(Eigen::VectorXf& weights);
-      static void HeNormal(Eigen::VectorXf& weights);
-      static void RandomNormal(Eigen::VectorXf& weights);
-      static void RandomUniform(Eigen::VectorXf& weights);
+      static void Zeros(WeightType& weights);
+      static void GlorotUniform(WeightType& weights);
+      static void GlorotNormal(WeightType& weights);
+      static void HeUniform(WeightType& weights);
+      static void HeNormal(WeightType& weights);
+      static void RandomNormal(WeightType& weights);
+      static void RandomUniform(WeightType& weights);
     private:
       const std::unordered_map<
         std::string,
-        std::function<void(Eigen::VectorXf& weights)>> functions {
+        std::function<void(WeightType& weights)>> functions {
           { "glorot_uniform", GlorotUniform },
           { "glorot_normal", GlorotNormal },
           { "he_uniform", HeUniform },

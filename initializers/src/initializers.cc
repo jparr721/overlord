@@ -6,9 +6,10 @@
 #include <swiss/strings.h>
 
 namespace cerebrum {
-  Initializers::Initializers(
+  template<typename WeightType>
+  Initializers<WeightType>::Initializers(
       std::string& initializer,
-      Eigen::VectorXf& weights) {
+      WeightType& weights) {
     swiss::to_lower(initializer);
 
     // Get the initializer by name
@@ -19,7 +20,8 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::RandomNormal(Eigen::VectorXf& weights) {
+  template<typename WeightType>
+  void Initializers<WeightType>::RandomNormal(WeightType& weights) {
     std::default_random_engine gen;
     std::normal_distribution<float> norm(0.0, 1.0);
 
@@ -29,7 +31,8 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::RandomUniform(Eigen::VectorXf& weights) {
+  template<typename WeightType>
+  void Initializers<WeightType>::RandomUniform(WeightType& weights) {
     std::default_random_engine gen;
     std::uniform_real_distribution<float> norm(0.0, 1.0);
 
@@ -39,14 +42,16 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::Zeros(Eigen::VectorXf& weights) {
+  template<typename WeightType>
+  void Initializers<WeightType>::Zeros(WeightType& weights) {
     for (int i = 0u; i < weights.size(); ++i) {
       weights[i] = 0.0;
     }
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::HeUniform(Eigen::VectorXf& weights) {
+  template<typename WeightType>
+  void Initializers<WeightType>::HeUniform(WeightType& weights) {
     std::default_random_engine gen;
     std::uniform_real_distribution<float> norm(0.0, 1.0);
 
@@ -56,7 +61,8 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::HeNormal(Eigen::VectorXf& weights) {
+  template<typename WeightType>
+  void Initializers<WeightType>::HeNormal(WeightType& weights) {
     std::default_random_engine gen;
     std::normal_distribution<float> norm(0.0, 1.0);
 
@@ -66,7 +72,8 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::GlorotUniform(Eigen::VectorXf& weights) {
+  template<typename WeightType>
+  void Initializers<WeightType>::GlorotUniform(WeightType& weights) {
     std::default_random_engine gen;
     std::uniform_real_distribution<float> norm(0.0, 1.0);
 
@@ -76,7 +83,8 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void Initializers::GlorotNormal(Eigen::VectorXf& weights) {
+  template<typename WeightType>
+  void Initializers<WeightType>::GlorotNormal(WeightType& weights) {
     std::default_random_engine gen;
     std::normal_distribution<float> norm(0.0, 1.0);
 

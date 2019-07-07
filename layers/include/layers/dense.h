@@ -3,8 +3,9 @@
 
 #include <eigen3/Eigen/Dense>
 #include <functional>
-#include <layers/base.h>
 #include <string>
+
+#include <layers/base.h>
 
 namespace cerebrum {
   class Dense : public Base {
