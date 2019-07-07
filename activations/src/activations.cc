@@ -18,11 +18,9 @@ namespace cerebrum {
   // TODO(jparr721) - Docs here
   void Activations::ReLu(Eigen::VectorXf& input_layer) {
     for (auto i = 0; i < input_layer.size(); ++i) {
-
+      float val = input_layer(i);
+      input_layer(i) = std::max(val, 0.0f);
     }
-    /* for (size_t i = 0; i < input_layer.size(); ++i) { */
-    /*   input_layer(i) = std::max(input_layer(i), 0.0); */
-    /* } */
   }
 
   // TODO(jparr721) - Docs here
