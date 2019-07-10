@@ -52,7 +52,7 @@ namespace cerebrum {
         std::normal_distribution<float> norm(0.0, 1.0);
 
         for (int i = 0u; i < weights.size(); ++i) {
-          weights[i] = norm(gen);
+          weights(i) = norm(gen);
         }
       }
 
@@ -62,7 +62,7 @@ namespace cerebrum {
         std::uniform_real_distribution<float> norm(0.0, 1.0);
 
         for (int i = 0u; i < weights.size(); ++i) {
-          weights[i] = norm(gen);
+          weights(i) = norm(gen);
         }
       }
 

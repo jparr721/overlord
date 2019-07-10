@@ -17,7 +17,7 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-  INTERFACE_LINK_LIBRARIES swiss
+  INTERFACE swiss
 )
 
 install(EXPORT ${PROJECT_NAME}Config
