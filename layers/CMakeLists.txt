@@ -1,7 +1,7 @@
 project(layers)
 file(GLOB SOURCES "src/*.cc")
 
-add_library(layers SHARED ${SOURCES})
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 target_include_directories(${PROJECT_NAME}
   PUBLIC
