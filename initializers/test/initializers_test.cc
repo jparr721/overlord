@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(Constructor) {
   weights << 1, 1;
 
   std::string type = "glorot_uniform";
-  cerebrum::Initializers<cerebrum::WeightsXf> i(
+  cerebrum::Initializers i(
       type,
       weights);
 }
