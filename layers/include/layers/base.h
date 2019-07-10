@@ -4,10 +4,15 @@
 #include <eigen3/Eigen/Dense>
 
 namespace cerebrum {
+  typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> WeightsXf;
+  typedef Eigen::Matrix<float, Eigen::Dynamic, 1> BiasXf;
   class Base {
     public:
       Base(const int inputs, const int outputs, const bool bias=true)
-        : inputs_(inputs), outputs_(outputs), bias_(bias) {};
+        : inputs_(inputs), outputs_(outputs), bias_(bias) {
+        weights.resize(inputs, outputs);
+        biases.resize(outputs);
+      }
 
       virtual ~Base();
 
@@ -15,15 +20,15 @@ namespace cerebrum {
       virtual Eigen::VectorXf forward(Eigen::VectorXf& input) = 0;
       virtual void backward() = 0;
     protected:
-      // The weights of our layer
-      Eigen::VectorXf weights;
-
-      // The bias units of our layer
-      Eigen::VectorXf biases;
-
       int inputs_;
       int outputs_;
       bool bias_;
+
+      // The weights of our layer
+      WeightsXf weights;
+
+      // The bias units of our layer
+      BiasXf biases;
 
       bool built;
   };

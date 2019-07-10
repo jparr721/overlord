@@ -24,18 +24,19 @@
 ////////////////////////////////////////////////////
 
 namespace cerebrum {
+  template<typename WeightType>
   class Regularizers {
     public:
-      Regularizers(std::string& regulaizer, Eigen::VectorXf& weights);
+      Regularizers(std::string& regulaizer, WeightType& weights, float lambda);
 
-      static void L1(Eigen::VectorXf& weights);
-      static void L2(Eigen::VectorXf& weights);
-      static void Dropout(Eigen::VectorXf& weights);
+      static void L1(WeightType& weights, float lambda);
+      static void L2(WeightType& weights, float lambda);
+      static void Dropout(WeightType& weights, float lambda);
 
     private:
       const std::unordered_map<
         std::string,
-        std::function<void(Eigen::VectorXf& weights)>> functions {
+        std::function<void(WeightType& weights)>> functions {
           { "l1", L1 },
           { "l2", L2 },
           { "dropout", Dropout },
