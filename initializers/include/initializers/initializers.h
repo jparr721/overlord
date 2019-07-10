@@ -27,23 +27,45 @@ namespace cerebrum {
       }
 
       static void Zeros(WeightType& weights) {
-
+        for (int i = 0u; i < weights.size(); ++i) {
+          weights(i) = 0.0;
+        }
       }
 
       static void GlorotUniform(WeightType& weights) {
+        std::default_random_engine gen;
+        std::uniform_real_distribution<float> norm(0.0, 1.0);
 
+        for (int i = 0u; i < weights.size(); ++i) {
+          weights(i) = norm(gen) * std::sqrt(1/weights.size());
+        }
       }
 
       static void GlorotNormal(WeightType& weights) {
+        std::default_random_engine gen;
+        std::normal_distribution<float> norm(0.0, 1.0);
 
+        for (int i = 0u; i < weights.size(); ++i) {
+          weights(i) = norm(gen) * std::sqrt(1/weights.size());
+        }
       }
 
       static void HeUniform(WeightType& weights) {
+        std::default_random_engine gen;
+        std::uniform_real_distribution<float> norm(0.0, 1.0);
 
+        for (int i = 0u; i < weights.size(); ++i) {
+          weights(i) = norm(gen) * std::sqrt(2/weights.size());
+        }
       }
 
       static void HeNormal(WeightType& weights) {
+        std::default_random_engine gen;
+        std::normal_distribution<float> norm(0.0, 1.0);
 
+        for (int i = 0u; i < weights.size(); ++i) {
+          weights(i) = norm(gen) * std::sqrt(2/weights.size());
+        }
       }
 
       // TODO(jparr721) - Docs here
