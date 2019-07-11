@@ -6,20 +6,22 @@
 #include <string>
 #include <unordered_map>
 
+#include <layers/base.h>
+
 namespace cerebrum {
   class Activations {
     public:
       Activations(
           std::string& activation,
-          Eigen::VectorXf& input_layer);
+          WeightsXf& input_layer);
 
-      static void ReLu(Eigen::VectorXf& input_layer);
-      static void Sigmoid(Eigen::VectorXf& input_layer);
-      static void Tanh(Eigen::VectorXf& input_layer);
+      static void ReLu(WeightsXf& input_weights);
+      static void Sigmoid(WeightsXf& input_weights);
+      static void Tanh(WeightsXf& input_weights);
     private:
       const std::unordered_map<
         std::string,
-        std::function<void(Eigen::VectorXf& input_layers)>> functions {
+        std::function<void(WeightsXf& input_weights)>> functions {
           { "relu", ReLu },
           { "sigmoid", Sigmoid },
           { "tanh", Tanh },
