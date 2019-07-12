@@ -16,27 +16,29 @@ namespace cerebrum {
           const bool use_bias,
           const std::string& activation,
           const std::string& kernel_initializer,
-          const std::string& bias_initializer,
-          const std::string& kernel_regularizer,
-          const std::string& bias_regularizer,
-          const std::string& activity_regularizer) :
+          const std::string& bias_initializer="",
+          const std::string& kernel_regularizer="",
+          const std::string& bias_regularizer="") :
+        activation_(activation),
         kernel_initializer_(kernel_initializer),
         bias_initializer_(bias_initializer),
         kernel_regularizer_(kernel_regularizer),
         bias_regularizer_(bias_regularizer),
-        activity_regularizer_(activity_regularizer),
         Base(inputs, outputs, use_bias) {};
 
       virtual ~Dense();
       virtual void build();
       virtual Eigen::VectorXf forward(Eigen::VectorXf& input);
+      virtual void backward(const Eigen::VectorXf& gradient);
 
     private:
+      bool built_ = false;
+
+      std::string activation_;
       std::string kernel_initializer_;
       std::string bias_initializer_;
       std::string kernel_regularizer_;
       std::string bias_regularizer_;
-      std::string activity_regularizer_;
   };
 
 } // namespace cerebrum

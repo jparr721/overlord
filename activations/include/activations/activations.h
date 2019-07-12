@@ -13,13 +13,13 @@ namespace cerebrum {
           std::string& activation,
           Eigen::VectorXf& input_layer);
 
-      static void ReLu(Eigen::VectorXf& input_layer);
-      static void Sigmoid(Eigen::VectorXf& input_layer);
-      static void Tanh(Eigen::VectorXf& input_layer);
+      static void ReLu(Eigen::VectorXf& input_weights);
+      static void Sigmoid(Eigen::VectorXf& input_weights);
+      static void Tanh(Eigen::VectorXf& input_weights);
     private:
       const std::unordered_map<
         std::string,
-        std::function<void(Eigen::VectorXf& input_layers)>> functions {
+        std::function<void(Eigen::VectorXf& input_weights)>> functions {
           { "relu", ReLu },
           { "sigmoid", Sigmoid },
           { "tanh", Tanh },
