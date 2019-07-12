@@ -1,11 +1,9 @@
 #ifndef BASE_H_
 #define BASE_H_
 
-#include <eigen3/Eigen/Dense>
+#include <swiss/containers.h>
 
 namespace cerebrum {
-  typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> WeightsXf;
-  typedef Eigen::Matrix<float, Eigen::Dynamic, 1> BiasXf;
   class Base {
     public:
       Base(const int inputs, const int outputs, const bool bias=true)
@@ -25,10 +23,10 @@ namespace cerebrum {
       bool bias_;
 
       // The weights of our layer
-      WeightsXf weights;
+      swiss::WeightsXf weights;
 
       // The bias units of our layer
-      BiasXf biases;
+      swiss::BiasXf biases;
 
       bool built;
   };

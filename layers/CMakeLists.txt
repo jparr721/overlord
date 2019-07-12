@@ -20,6 +20,7 @@ install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
 target_link_libraries(${PROJECT_NAME}
   initializers
   regularizers
+  activations
 )
 
 install(DIRECTORY include/ DESTINATION "${INSTALL_INCLUDE_DIR}")

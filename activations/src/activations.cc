@@ -1,12 +1,12 @@
 #include <cmath>
 #include <activations/activations.h>
+#include <swiss/strings.h>
 
 namespace cerebrum {
   Activations::Activations(
       std::string& activation,
-      WeightsXf& input_weights) {
-    std::transform(activation.begin(), activation.end(),
-        activation.begin(), ::tolower);
+      Eigen::VectorXf& input_weights) {
+    swiss::to_lower(activation);
 
     // Get the activation by name
     auto activation_ = functions.at(activation);
@@ -16,7 +16,7 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void Activations::ReLu(WeightsXf& input_weights) {
+  void Activations::ReLu(Eigen::VectorXf& input_weights) {
     for (auto i = 0; i < input_weights.size(); ++i) {
       float val = input_weights(i);
       input_weights(i) = std::max(val, 0.0f);
@@ -24,14 +24,14 @@ namespace cerebrum {
   }
 
   // TODO(jparr721) - Docs here
-  void Activations::Sigmoid(WeightsXf& input_weights) {
+  void Activations::Sigmoid(Eigen::VectorXf& input_weights) {
     for (size_t i = 0; i < input_weights.size(); ++i) {
-      input_weights(i) = 1 / 1 + std::exp(input_layer(i));
+      input_weights(i) = 1 / 1 + std::exp(input_weights(i));
     }
   }
 
   // TODO(jparr721) - Docs here
-  void Activations::Tanh(WeightsXf& input_weights) {
+  void Activations::Tanh(Eigen::VectorXf& input_weights) {
 
   }
 } // namespace cerebrum
