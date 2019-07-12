@@ -24,4 +24,8 @@ namespace cerebrum {
 
     return output;
   }
+
+  void Dense::backward(const Eigen::VectorXf& gradient) {
+
+  }
 } // namespace cerebrum

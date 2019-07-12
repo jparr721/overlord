@@ -29,6 +29,7 @@ namespace cerebrum {
       virtual ~Dense();
       virtual void build();
       virtual Eigen::VectorXf forward(Eigen::VectorXf& input);
+      virtual void backward(const Eigen::VectorXf& gradient);
 
     private:
       bool built_ = false;
