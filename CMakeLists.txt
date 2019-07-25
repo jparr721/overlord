@@ -1,46 +1,49 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
-project(cerebrum LANGUAGES CXX)
+project(cerebrum LANGUAGES CXX CUDA)
+
+include(CheckLanguage)
+check_language(CUDA)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(INSTALL_LIB_DIR lib CACHE PATH "Install directory for library code")
+set(INSTALL_BIN_DIR CACHE PATH "Install directory for executables")
+set(INSTALL_INCLUDE_DIR include CACHE PATH "Install directory for header files")
+
+if(WIN32 AND NOT CYGWIN)
+  set(DEF_INSTALL_CMAKE_DIR CMake)
+else()
+  set(DEF_INSTALL_CMAKE_DIR lib/CMake/cerebrum)
+endif()
+
+if(NOT DEFINED CMAKE_CUDA_STANDARD)
+  set(CMAKE_CUDA_STANDARD 14)
+  set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+endif()
+
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
 
 find_package(Boost 1.69 COMPONENTS unit_test_framework REQUIRED)
-find_package(Armadillo 9.3 REQUIRED)
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
-include_directories(${Boost_INCLUDE_DIRS})
-include_directories(${ARMADILLO_INCLUDE_DIRS})
+include_directories(
+  "${PROJECT_SOURCE_DIR}"
+  "${PROJECT_BINARY_DIR}"
+  ${Boost_INCLUDE_DIRS}
+)
 
-add_executable(
-  dense_layer_test
-  test/dense_test.cc
-  )
-
-target_link_libraries(dense_layer_test LINK_PUBLIC ${Boost_LIBRARIES})
-target_link_libraries(dense_layer_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
-
-add_executable(
-  conv_layer_test
-  test/conv_test.cc
-  )
-
-target_link_libraries(conv_layer_test LINK_PUBLIC ${Boost_LIBRARIES})
-target_link_libraries(conv_layer_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
-
-add_executable(
-  file_reader_test
-  util/file_reader.cc
-  test/file_reader_test.cc
-  )
-
-target_link_libraries(file_reader_test LINK_PUBLIC ${Boost_LIBRARIES})
-target_link_libraries(file_reader_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
-
-add_executable(
-  network_test
-  test/network_test.cc
-  )
-
-target_link_libraries(network_test LINK_PUBLIC ${Boost_LIBRARIES})
-target_link_libraries(network_test LINK_PUBLIC ${ARMADILLO_LIBRARIES})
+add_subdirectory(layers)
+add_subdirectory(swiss)
+add_subdirectory(activations)
+add_subdirectory(initializers)
+add_subdirectory(regularizers)
+add_subdirectory(criterion)
+add_subdirectory(ga)
