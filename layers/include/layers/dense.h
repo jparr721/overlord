@@ -13,6 +13,8 @@ namespace cerebrum {
       Dense(
           const int inputs,
           const int outputs,
+          const float learning_rate,
+          const float eta, // Our momentum
           const bool use_bias,
           const std::string& activation,
           const std::string& kernel_initializer,

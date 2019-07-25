@@ -1,5 +1,6 @@
-#include <memory>
+#include <cassert>
 #include <iostream>
+#include <memory>
 
 #include <activations/activations.h>
 #include <initializers/initializers.h>
@@ -22,10 +23,20 @@ namespace cerebrum {
 
     auto activation = std::make_shared<Activations>(activation_, output);
 
+    this->output = output;
+    outputs_ = output.rows() * output.cols();
     return output;
   }
 
-  void Dense::backward(const Eigen::VectorXf& gradient) {
+  /// Our backprop algorithm. The epsilon is calculated within the engine
+  /// class with the provided target values. This is used as our upstream
+  /// gradient to multiply by our weights in the matrix.
+   Dense::backward(const Eigen::VectorXf& epsilon) {
+    assert(epsilon.size() == weights.size());
+    // Our empty vector of deltas
+    Eigen::VectorXf deltas = Eigen::VectorXf::Zero(epsilon.rows(), epsilon.cols());
 
+    weights = learning_rate_ * weights * epsilon * eta_;
+    biases = learning_rate_ * biases * epsilon * eta_;
   }
 } // namespace cerebrum
