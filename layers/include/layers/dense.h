@@ -26,12 +26,12 @@ namespace cerebrum {
         bias_initializer_(bias_initializer),
         kernel_regularizer_(kernel_regularizer),
         bias_regularizer_(bias_regularizer),
-        Base(inputs, outputs, use_bias) {};
+        Base(inputs, outputs, learning_rate, eta, use_bias) {};
 
       virtual ~Dense();
       virtual void build();
       virtual Eigen::VectorXf forward(Eigen::VectorXf& input);
-      virtual void backward(const Eigen::VectorXf& gradient);
+      virtual void backward(const Eigen::VectorXf& epsilon);
 
     private:
       bool built_ = false;
