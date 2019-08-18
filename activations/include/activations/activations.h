@@ -6,23 +6,34 @@
 #include <string>
 #include <unordered_map>
 
+#include <swiss/containers.h>
+
 namespace cerebrum {
   class Activations {
     public:
       Activations(
           std::string& activation,
-          Eigen::VectorXf& input_layer);
+          swiss::WeightsXf input_layer);
 
-      static void ReLu(Eigen::VectorXf& input_weights);
-      static void Sigmoid(Eigen::VectorXf& input_weights);
-      static void Tanh(Eigen::VectorXf& input_weights);
+      /// ------------------------------------- Activations
+      static void ReLu(swiss::WeightsXf& input_weights);
+      static void Sigmoid(swiss::WeightsXf& input_weights);
+      static void Tanh(swiss::WeightsXf& input_weights);
+
+      /// ------------------------------------- Activation Derivatives
+      static void dReLu(swiss::WeightsXf& input_weights);
+      static void dSigmoid(swiss::WeightsXf& input_weights);
+      static void dTanh(swiss::WeightsXf& input_weights);
     private:
       const std::unordered_map<
         std::string,
-        std::function<void(Eigen::VectorXf& input_weights)>> functions {
+        std::function<void(swiss::WeightsXf& input_weights)>> functions {
           { "relu", ReLu },
           { "sigmoid", Sigmoid },
           { "tanh", Tanh },
+          { "drelu", dReLu },
+          { "dsigmoid", dSigmoid },
+          { "dtanh", dTanh },
         };
   };
 } // namespace cerebrum

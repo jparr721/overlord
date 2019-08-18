@@ -19,24 +19,30 @@ namespace cerebrum {
   }
 
   Eigen::VectorXf Dense::forward(Eigen::VectorXf& input) {
+    assert(input.rows() == weights.cols());
+
+    // First take our input by the weights, then add bias
     Eigen::VectorXf output = (input * weights) + biases;
 
+    // Then, take our activation and apply it to the output
     auto activation = std::make_shared<Activations>(activation_, output);
 
-    this->output = output;
+    // Get new output size
     outputs_ = output.rows() * output.cols();
+
     return output;
   }
 
   /// Our backprop algorithm. The epsilon is calculated within the engine
   /// class with the provided target values. This is used as our upstream
   /// gradient to multiply by our weights in the matrix.
-   Dense::backward(const Eigen::VectorXf& epsilon) {
+  void Dense::backward(const Eigen::VectorXf& epsilon) {
     assert(epsilon.size() == weights.size());
+
     // Our empty vector of deltas
+    // this helps us determine weight direction change
     Eigen::VectorXf deltas = Eigen::VectorXf::Zero(epsilon.rows(), epsilon.cols());
 
-    weights = learning_rate_ * weights * epsilon * eta_;
-    biases = learning_rate_ * biases * epsilon * eta_;
+
   }
 } // namespace cerebrum
