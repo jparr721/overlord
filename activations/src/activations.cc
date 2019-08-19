@@ -37,7 +37,25 @@ namespace cerebrum {
     }
   }
 
-  void Activations::dReLu(swiss::WeightsXf& inputs) {
+  void Activations::dReLu(swiss::WeightsXf& input_weights) {
+    for (size_t i = 0; i < input_weights.size(); ++i) {
+      if (input_weights(i) > 0) {
+        input_weights(i) = 1;
+      } else {
+        input_weights(i) = 0;
+      }
+    }
+  }
 
+  void Activations::dSigmoid(swiss::WeightsXf& input_weights) {
+    for (size_t i = 0; i < input_weights.size(); ++i) {
+      input_weights(i) = input_weights(i) * (1 - input_weights(i));
+    }
+  }
+
+  void Activations::dTanh(swiss::WeightsXf& input_weights) {
+    for (size_t i = 0; i < input_weights.size(); ++i) {
+      input_weights(i) = 1 - (input_weights(i) * input_weights(i));
+    }
   }
 } // namespace cerebrum
