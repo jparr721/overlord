@@ -1,6 +1,6 @@
 #pragma once
 
-#include <eigen3/Eigen>
+#include <eigen3/Eigen/Dense>
 
 namespace overlord {
   class Activation {
@@ -9,10 +9,7 @@ namespace overlord {
       virtual ~Activation();
       virtual void Forward(Eigen::MatrixXf& inputs) = 0;
       virtual void Backward(Eigen::MatrixXf& inputs) = 0;
-
-    protected:
-      const Eigen::MatrixXf weights_;
-  }
+  };
 
   class Sigmoid : private Activation {
     public:
