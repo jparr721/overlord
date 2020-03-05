@@ -44,14 +44,14 @@ namespace overlord {
 
       int Backward(double gradient) {
         if (this->is_debug) {
-          DbgPrint("Weights before backprop step", this->weights);
+          debug::DbgPrint("Weights before backprop step", this->weights);
         }
 
         this->weights += this->weights.t().dot(gradient);
         this->biases += this->bises.t().dot(gradient);
 
         if (this->is_debug) {
-          DbgPrint("Weights after backprop step", this->weights);
+          debug::DbgPrint("Weights after backprop step", this->weights);
         }
 
         return this->weights.t().dot(gradient);
