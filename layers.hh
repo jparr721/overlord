@@ -14,7 +14,7 @@ namespace overlord {
       Eigen::MatrixXf biases;
       bool is_init = false;
 
-      Layer(WeightsInitializer w_init, BiasInitializer b_init) : w_init_(w_init), b_init_(b_init) {};
+      Layer(WeightsInitializer w_init, BiasInitializer b_init, double lr) : w_init_(w_init), b_init_(b_init) {};
 
       virtual void Init(bool with_debug) = 0;
       virtual int Forward() = 0;
@@ -42,19 +42,17 @@ namespace overlord {
         return inputs.dot(this->weights) + this->biases;
       }
 
-      int Backward(double gradient) {
+      void Backward(double gradient, double output_delta) {
         if (this->is_debug) {
           debug::DbgPrint("Weights before backprop step", this->weights);
         }
 
-        this->weights += this->weights.t().dot(gradient);
-        this->biases += this->bises.t().dot(gradient);
+        this->weights -= this->lr * this->weights.t().dot(output_delta) * gradient;
+        this->biases -= this->lr * this->bises.sum();
 
         if (this->is_debug) {
           debug::DbgPrint("Weights after backprop step", this->weights);
         }
-
-        return this->weights.t().dot(gradient);
       }
   };
 } // namespace overlord
